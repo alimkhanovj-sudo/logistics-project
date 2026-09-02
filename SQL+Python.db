@@ -1,0 +1,3 @@
+	SELECT ShipmentID, ShipmentNumber, CustomerID, Delay, DeliveryDate
+	FROM Shipments
+	WHERE Delay > 5;

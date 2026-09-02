@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="logistics_project.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="2185"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="Customers" custom_title="0" dock_id="4" table="4,9:mainCustomers"/><dock_state state="000000ff00000000fd0000000100000002000003e1000002b4fc0100000002fb000000160064006f0063006b00420072006f00770073006500310100000000000003e10000000000000000fb000000160064006f0063006b00420072006f00770073006500340100000000000003e10000018700ffffff000003e10000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Customers" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="75"/><column index="2" value="94"/><column index="3" value="93"/><column index="4" value="109"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">CREATE TABLE Customers
+(
+    CustomerID INTEGER PRIMARY KEY,
+    CustomerName TEXT NOT NULL UNIQUE,
+    Country TEXT NOT NULL,
+    Manager TEXT
+);</sql><sql name="SQL 3">CREATE TABLE Invoices
+(
+    InvoiceID INTEGER PRIMARY KEY,
+    ShipmentID INTEGER NOT NULL,
+    Amount REAL NOT NULL,
+    Status TEXT NOT NULL,
+    InvoiceDate TEXT NOT NULL,
+
+    FOREIGN KEY (ShipmentID)
+        REFERENCES Shipments(ShipmentID)
+);</sql><sql name="Portfolio.sql" filename="C:/supply-chain-learning/Portfolio.sql">-- Reference to file &quot;C:/supply-chain-learning/Portfolio.sql&quot; (not supported by this version) --</sql><sql name="SQL 7">INSERT INTO Shipments
+(ShipmentNumber, CustomerID, DriverID, Delay, Pallets, DeliveryDate)
+VALUES
+('SH001', 1, 1, 2, 18, '2026-08-01'),
+('SH002', 2, 2, 0, 25, '2026-08-02'),
+('SH003', 3, 3, 5, 12, '2026-08-03'),
+('SH004', 4, 4, 1, 30, '2026-08-04'),
+('SH005', 5, 5, 4, 16, '2026-08-05'),
+('SH006', 6, 6, 0, 22, '2026-08-06'),
+('SH007', 7, 7, 3, 28, '2026-08-07'),
+('SH008', 8, 8, 2, 15, '2026-08-08'),
+('SH009', 9, 1, 6, 24, '2026-08-09'),
+('SH010',10, 2, 1, 19, '2026-08-10'),
+('SH011', 1, 3, 0, 20, '2026-08-11'),
+('SH012', 2, 4, 2, 17, '2026-08-12'),
+('SH013', 3, 5, 8, 10, '2026-08-13'),
+('SH014', 4, 6, 3, 27, '2026-08-14'),
+('SH015', 5, 7, 0, 21, '2026-08-15'),
+('SH016', 6, 8, 5, 14, '2026-08-16'),
+('SH017', 7, 1, 2, 26, '2026-08-17'),
+('SH018', 8, 2, 7, 13, '2026-08-18'),
+('SH019', 9, 3, 1, 31, '2026-08-19'),
+('SH020',10, 4, 4, 23, '2026-08-20');</sql><sql name="PORTFOLIO1.sql" filename="C:/supply-chain-learning/PORTFOLIO1.sql">-- Reference to file &quot;C:/supply-chain-learning/PORTFOLIO1.sql&quot; (not supported by this version) --</sql><sql name="SQL 27">SELECT 'Drivers', COUNT(*)
+FROM Drivers
+UNION ALL
+SELECT 'Customers' AS Table_Name, COUNT(*) AS Total_Rows
+FROM Customers
+UNION ALL
+SELECT 'Invoices', COUNT(*)
+FROM Invoices
+UNION ALL
+SELECT 'Shipments', COUNT(*)
+FROM Shipments;</sql><sql name="Portfolio 3.sql" filename="C:/supply-chain-learning/Portfolio 3.sql">-- Reference to file &quot;C:/supply-chain-learning/Portfolio 3.sql&quot; (not supported by this version) --</sql><sql name="SQL 10*">SELECT ShipmentNumber, CustomerID, InvoiceID, Amount, Status
+FROM Shipments s 
+JOIN Invoices i
+ON s.ShipmentNumber = i.ShipmentNumber
+WHERE s.DeliveryDate IS NULL;
+
+--
+
+SELECT CustomerID, Customer, Country
+FROM Customers c
+WHERE NOT EXISTS(
+SELECT 1
+FROM Shipments s
+JOIN Invoices i
+ON i.ShipmentID = s.ShipmentID
+WHERE c.CusotmerID = s.CustomerID
+AND Status = 'Paid'
+);
+
+--Каждый день нужно получать список клиентов, у которых за последние 
+30 дней не было ни одной отправки с задержкой больше 5 дней. Покажи CustomerID, Customer, Country. 
+Потом автоматически сохрани результат в Excel
+
+--Каждое утро подготовь отчёт по клиентам.
+Мне нужны только те клиенты, у которых за последние 30 дней было минимум 2 отправки и ХОТЯ БЫ ОДНА из них имела задержку 
+больше 5 дней. Покажи Customer, Country, количество отправок 
+и максимальную задержку. Затем сохрани результат в Excel Customer_Risk_Report.xlsx.»
+
+SELECT COUNT(ShipmentID) AS Total_Shipment,
+ MAX(s.Delay) AS Max_Delay,
+    c.Customer,
+    c.Country
+FROM Shipments s
+JOIN Customers c
+ON s.CustomerID = c.CustomerID
+WHERE s.DeliveryDate &gt;= date('now', '-30 days')
+GROUP BY  c.CustomerID,
+    c.Customer,
+    c.Country
+HAVING COUNT(s.ShipmentID) &gt;= 2
+AND MAX(s.Delay) &gt; 5
+ORDER BY MAX(s.Delay) DESC;
+
+</sql><current_tab id="6"/></tab_sql></sqlb_project>

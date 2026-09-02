@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="SQL2.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="931"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="Customers" custom_title="0" dock_id="8" table="4,9:mainCustomers"/><dock_state state="000000ff00000000fd0000000100000002000003e1000002b6fc0100000006fc00000000000003e10000000000fffffffa000000000100000002fb000000160064006f0063006b00420072006f00770073006500310000000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500320100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500340100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500350100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500360100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500370100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500380100000000ffffffff0000012800ffffff000003e10000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1">SELECT Shipment, Customer, Delay
+FROM Shipments
+WHERE Delay &gt;
+(
+	SELECT AVG(Delay)
+	FROM Shipments 
+);
+
+SELECT Shipment, Customer, Delay
+FROM Shipments
+WHERE Customer IN
+(
+	SELECT Customer
+	FROM Customers
+	WHERE Country = 'USA'
+);
+
+--Покажет клиентов из таблицы Customers, которые существуют в таблице Shipments.
+SELECT Customer
+FROM Customers
+WHERE Customer IN
+(
+    SELECT Customer
+    FROM Shipments
+);
+	</sql><sql name="SQL 2">SELECT AVG(Pallets) AS Avarage_Pallets 
+FROM Shipments; 
+
+SELECT MIN(Delay) AS Minimal_Delay 
+FROM Shipments;
+
+SELECT MAX(Pallets) AS Maximum_Pallets
+FROM Shipments; 
+
+SELECT Customer, AVG(Delay) AS Avarage_Delay 
+FROM Shipments 
+GROUP BY Customer; 
+
+SELECT Customer, AVG(Pallets) AS Avarage_Pallets, MIN(Pallets) AS Minimum_Pallets, MAX(Pallets) AS Maximum_Pallets 
+FROM Shipments 
+GROUP BY Customer;</sql><sql name="SQL 3">CREATE TABLE Customers
+(
+    Customer TEXT PRIMARY KEY,
+    Country TEXT,
+    Phone TEXT
+);
+INSERT INTO Customers
+(Customer, Country, Phone)
+VALUES
+('IKEA', 'Sweden', 3, 15);
+
+
+
+</sql><sql name="SQL 4">CREATE TABLE Invoices
+(
+    Invoice TEXT PRIMARY KEY,
+    Customer TEXT,
+    Amount INTEGER
+);
+
+INSERT INTO Invoices
+(Invoice, Customer, Amount)
+VALUES
+('INV001', 'IKEA', 50)
+('INV002', 'IKEA', 100)
+('INV003', 'DHL', 500);</sql><sql name="SQL5.sql" filename="C:/supply-chain-learning/SQL5.sql">-- Reference to file &quot;C:/supply-chain-learning/SQL5.sql&quot; (not supported by this version) --</sql><sql name="SQL 6">
+
+INSERT INTO AirShipments
+(Shipment)
+VALUES
+('AIR001'),
+('AIR002'),
+('AIR003'),
+('SEA003');</sql><sql name="SQL 7">SELECT *
+FROM AirShipments
+
+UNION ALL
+
+SELECT *
+FROM SeaShipments
+</sql><sql name="SQL6.sql" filename="C:/supply-chain-learning/SQL6.sql">-- Reference to file &quot;C:/supply-chain-learning/SQL6.sql&quot; (not supported by this version) --</sql><sql name="SQL 9">CREATE INDEX idx_customer
+ON Shipments(Customer);
+
+SELECT *
+FROM Shipments
+WHERE Customer = 'Amazon';
+
+WITH BigDelays AS
+(	
+	SELECT Shipment, Customer, Delay
+	FROM Shipments
+	WHERE Delay &gt;= 5 
+	) 
+SELECT *
+FROM BigDelays; 
+
+WITH CustomerSummary AS
+(	
+	SELECT Customer, SUM(Pallets) AS Total_Pallets
+	FROM Shipments
+	GROUP BY Customer;
+	)
+SELECT *
+FROM CustomerSummary
+WHERE Total_Pallets &gt; 20;
+
+WITH Total_Delay AS
+(
+	SELECT Customer, SUM(Delay) AS All_Delays
+	FROM Shipments
+	GROUP BY Customer
+	)
+SELECT *
+FROM Total_Delay
+WHERE All_Delays &gt; 5;</sql><sql name="SQL7.sql" filename="C:/supply-chain-learning/SQL7.sql">-- Reference to file &quot;C:/supply-chain-learning/SQL7.sql&quot; (not supported by this version) --</sql><sql name="SQL 12">SELECT Shipment,
+       Customer,
+	   DeliveryDate,
+	   strftime('%m', DeliveryDate) AS Month,
+	   strftime('%d', DeliveryDate) AS Day
+FROM Cargos;
+
+	   </sql><sql name="SQL 8.sql" filename="C:/supply-chain-learning/SQL 8.sql">-- Reference to file &quot;C:/supply-chain-learning/SQL 8.sql&quot; (not supported by this version) --</sql><current_tab id="11"/></tab_sql></sqlb_project>
