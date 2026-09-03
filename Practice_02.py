@@ -44,4 +44,4 @@
 # print()   
 # print(f"Total pallets: {total_pallets}")    
 
-print("Git practice")
+print("New delay report")
