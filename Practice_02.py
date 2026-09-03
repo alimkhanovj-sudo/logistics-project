@@ -1,27 +1,27 @@
-from openpyxl import load_workbook
+# from openpyxl import load_workbook
 
-workbook = load_workbook("shipments.xlsx")
+# workbook = load_workbook("shipments.xlsx")
 
-sheet = workbook.active
+# sheet = workbook.active
 
-critical = 0
-total_pallets = 0
+# critical = 0
+# total_pallets = 0
 
-for row in sheet.iter_rows(min_row=2):
-        number = row[0].value
-        customer = row[1].value
-        delay = row[2].value
-        pallets = row[3].value
-        total_pallets += pallets
+# for row in sheet.iter_rows(min_row=2):
+#         number = row[0].value
+#         customer = row[1].value
+#         delay = row[2].value
+#         pallets = row[3].value
+#         total_pallets += pallets
 
-        if delay > 2:
-            critical += 1
-            print(f"Shipment number: {number}")
-            print(f"Customer: {customer}")
-            print(f"Delay: {delay}")
-            print(f"Status: critical delay")
-            print(f"Critical shipments: {critical}")
-            print(f"Pallets: {pallets}")
+#         if delay > 2:
+#             critical += 1
+#             print(f"Shipment number: {number}")
+#             print(f"Customer: {customer}")
+#             print(f"Delay: {delay}")
+#             print(f"Status: critical delay")
+#             print(f"Critical shipments: {critical}")
+#             print(f"Pallets: {pallets}")
 
 #     if delay == 0:
 #        status = "No delay"
@@ -41,6 +41,7 @@ for row in sheet.iter_rows(min_row=2):
 # print()    
 # print(f"Total pallets: {total_pallets}")    
 
-print()   
-print(f"Total pallets: {total_pallets}")    
+# print()   
+# print(f"Total pallets: {total_pallets}")    
 
+print("Git practice")
