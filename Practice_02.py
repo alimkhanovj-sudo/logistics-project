@@ -45,3 +45,4 @@
 # print(f"Total pallets: {total_pallets}")    
 
 print("New delay report")
+print("Change from first computer")
