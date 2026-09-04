@@ -45,4 +45,8 @@
 # print(f"Total pallets: {total_pallets}")    
 
 print("New delay report")
+<<<<<<< HEAD
 print("Version from main")
+=======
+print("Version from conflict-test")
+>>>>>>> conflict-test
